@@ -1,5 +1,6 @@
 package servlet;
 
+import com.alibaba.fastjson.JSON;
 import entity.Patient;
 import entity.Register;
 import service.GuaHaoService;
@@ -8,8 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Date;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 public class GuaHaoServlet extends HttpServlet {
 
@@ -21,55 +26,73 @@ public class GuaHaoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        StringBuffer json = new StringBuffer();
+        String line = null;
+        BufferedReader reader = null;
+        try {
+            reader = req.getReader();
+            while((line = reader.readLine()) != null) {
+                json.append(line);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(reader != null)
+                reader.close();
+        }
+
+        HashMap param = JSON.parseObject(json.toString(), HashMap.class);
+
         //获取提交参数
-        Integer caseCode = Integer.parseInt(req.getParameter("caseCode"));
-
-//        Date diagnoseTime = req.getParameter("diagnoseTime");
-
-        String diagnosePeriod = req.getParameter("diagnosePeriod");
-
-        String status = req.getParameter("status");
-
-        Integer clinicId = Integer.parseInt(req.getParameter("clinicId"));
-
-        Integer doctorId = Integer.parseInt(req.getParameter("doctorId"));
-
-        Integer registerCategoryId = Integer.parseInt(req.getParameter("registerCategoryId"));
-
         //构造entity对象
         Register register = new Register();
-        register.setCaseCode(caseCode);
-        register.setDiagnosePeriod(diagnosePeriod);
-        register.setStatus(status);
-        register.setClinicId(clinicId);
-        register.setDoctorId(doctorId);
-        register.setRegisterCategoryId(registerCategoryId);
 
-        String name = req.getParameter("name");
+        if(param.get("diagnoseTime") != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                register.setDiagnoseTime(sdf.parse((String) param.get("diagnoseTime")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
-        String sex = req.getParameter("sex");
-
-        String idCard = req.getParameter("idCard");
-
-//        Date birthday = req.getParameter("idCard");
-
-        Integer age = Integer.parseInt(req.getParameter("age"));
-
-        String ageType = req.getParameter("ageType");
+        register.setCaseCode((Integer) param.get("caseCode"));
+        register.setDiagnosePeriod(String.valueOf(param.get("diagnosePeriod")));
+        register.setStatus(String.valueOf(param.get("status")));
+        register.setClinicId((Integer) param.get("clinicId"));
+        register.setDoctorId((Integer) param.get("doctorId"));
+        register.setRegisterCategoryId((Integer) param.get("registerCategoryId"));
 
         //构造entity对象
         Patient patient = new Patient();
-        patient.setName(name);
-        patient.setSex(sex);
-        patient.setIdCard(idCard);
-        patient.setAge(age);
-        patient.setAgeType(ageType);
+
+        if(param.get("birthday") != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                patient.setBirthday(sdf.parse(String.valueOf(param.get("birthday"))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(param.get("age") != null){
+            Integer age = (Integer) param.get("age");
+            patient.setAge(age);
+        }
+
+        patient.setName(String.valueOf(param.get("name")));
+        patient.setSex(String.valueOf(param.get("sex")));
+        patient.setIdCard(String.valueOf(param.get("idCard")));
+        patient.setAgeType(String.valueOf(param.get("ageType")));
 
         GuaHaoService service = new GuaHaoService();
         boolean result = service.guahao(register,patient);
 
-        req.setAttribute("result",result);
-        req.getRequestDispatcher("guahao.jsp").forward(req,resp);
+        PrintWriter out = resp.getWriter();
+        out.print(result);
+        out.flush();
+        out.close();
 
     }
 }

@@ -139,7 +139,7 @@
 	<div id="iframe_box" class="Hui-article">
 		<div class="show_iframe">
 			<div style="display:none" class="loading"></div>
-			<iframe scrolling="yes" frameborder="0" src="member-add.html"></iframe>
+			<iframe scrolling="yes" frameborder="0" src="guahao.jsp"></iframe>
 		</div>
 	</div>
 </section>
