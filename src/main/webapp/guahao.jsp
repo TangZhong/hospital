@@ -61,7 +61,7 @@
 			</div>
 			<label class="form-label col-xs-1 col-sm-1">性别：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<span class="select-box"><select class="select" name="sex">
+				<span class="select-box"><select class="select" name="sex" id="sex">
 					<option>男</option>
 					<option>女</option>
 				</select></span>
@@ -112,7 +112,7 @@
 			</div>
 			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>挂号科室：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<span class="select-box"><select class="select" name="clinicId">
+				<span class="select-box"><select class="select" name="clinicId" id="clinicId">
 					<option value="1">内科</option>
 					<option value="2">外科</option>
 					<option value="3">五官科</option>
@@ -120,17 +120,18 @@
 			</div>
 			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>看诊医生：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<span class="select-box"><select class="select" name="doctorId">
-					<option value="1">扁鹊</option>
+				<span class="select-box"><select class="select" name="doctorId" id="doctorId">
+					<%--<option value="1">扁鹊</option>
 					<option value="2">孙思邈</option>
-					<option value="3">华佗</option>
+					<option value="3">华佗</option>--%>
 				</select></span>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>号别：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<span class="select-box"><select class="select" name="registerCategoryId">
+				<span class="select-box"><select class="select" id="registerCategoryId" name="registerCategoryId">
+					<option value="0">请选择</option>
 					<option value="1">普通号</option>
 					<option value="2">专家号</option>
 				</select></span>
@@ -148,9 +149,9 @@
 					<option value="2">医保</option>
 				</select></span>
 			</div>
-			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>应收金额：</label>
+			<label class="form-label col-xs-1 col-sm-1">应收金额：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="price" name="price">
+				<input type="text" class="input-text" value="" placeholder="" id="price" name="price" disabled="disabled">
 			</div>
 			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>收费方式：</label>
 			<div class="formControls col-xs-2 col-sm-2">
@@ -197,13 +198,101 @@
 		});
 	}
 
+	function loadDictionary(category){
+        $.ajax({
+            url: "/dictionary?cat=" + category,
+            type: "get",
+            success: function (data) {
+                priceObj = eval(data);
+				console.log(priceObj)
+            }
+        });
+	}
+
+    function queryPatientByCaseCode(caseCode){
+        $.ajax({
+            url: "/guahao?caseCode=" + caseCode,
+            type: "get",
+            success: function (data) {
+                var patientObj = eval(data);
+                console.log(patientObj)
+                $('#name').val(patientObj.name);
+                $('#sex').val(patientObj.sex);
+                $('#age').val(patientObj.age);
+            }
+        });
+    }
+
+    var priceObj = {};
+
 $(function(){
+
+	loadDictionary("registerCategory");
+
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	});
 
+    $("#registerCategoryId").change(function(){
+
+        var registerCategoryId=$("#registerCategoryId").find("option:selected").val();
+
+        console.log(priceObj[1]);
+
+        if(1 == registerCategoryId){
+            $('#price').val(priceObj['1']);
+		}else if(2 == registerCategoryId){
+            $('#price').val(priceObj['2']);
+		}
+
+	});
+
+    function objInit(obj){
+        return $(obj).html('<option>请选择</option>');
+    }
+    var clinicMapping={
+        内科:'a,b,c',
+        外科:'d,e',
+        五官科:'f'};
+
+	var registerTypeMapping={
+       普通号:'aa,bb,cc',
+	   专家号:'dd,ee'
+	};
+
+    function objInit(obj){
+        return $(obj).html('<option>请选择</option>');
+    }
+
+    $('#clinicId').change(function () {
+        objInit('#doctorId');
+        $.each(clinicMapping,function (k,v) {
+			if($('#clinicId option:selected').text() == k){
+                $.each(v.split(","),function(){
+                    $('#doctorId').append('<option>'+this+'</option>');
+                })
+			}
+        })
+    });
+
+    $('#registerCategoryId').change(function () {
+        objInit('#doctorId');
+		$.each(registerTypeMapping,function (k,v) {
+            if($('#registerCategoryId option:selected').text()==k){
+                $.each(v.split(","),function(){
+                    $('#doctorId').append('<option>'+this+'</option>');
+                })
+			}
+        })
+
+    });
+
+    $('#caseCode').on('blur',function () {
+        var caseCode = $('#caseCode').val();
+		queryPatientByCaseCode(caseCode);
+    });
 
 	$("#form-member-add").validate({
 		rules:{

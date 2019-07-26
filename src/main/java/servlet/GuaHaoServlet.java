@@ -1,6 +1,8 @@
 package servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import dao.PatientDao;
 import entity.Patient;
 import entity.Register;
 import service.GuaHaoService;
@@ -16,11 +18,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+/**
+ * get请求 - 查询病历号关联的病人信息
+ * post请求 - 保存挂号信息
+ */
+
 public class GuaHaoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        String caseCode = req.getParameter("caseCode");
+        PatientDao patientDao = new PatientDao();
+        Patient patient = patientDao.queryByCaseCode(Integer.valueOf(caseCode));
+
+        resp.setContentType("text/json; charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        if(patient == null)
+            out.print(new JSONObject());
+        else
+            out.print(JSON.parseObject(JSON.toJSONString(patient)));
+
+        out.flush();
+        out.close();
     }
 
     @Override

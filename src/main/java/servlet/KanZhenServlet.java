@@ -28,9 +28,9 @@ public class KanZhenServlet extends HttpServlet {
         KanZhenService kanZhenService = new KanZhenService();
         List<KanZhenPatientVo> kanZhenPatientVoList = kanZhenService.listKanzhenPatients(doctorId);
 
-        req.setAttribute("list",kanZhenPatientVoList);
+        req.setAttribute("patientList",kanZhenPatientVoList);
 
-        req.getRequestDispatcher("kanzhen.jsp").forward(req,resp);
+        req.getRequestDispatcher("doctor/kanzhen.jsp").forward(req,resp);
 
     }
 

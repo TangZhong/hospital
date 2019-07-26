@@ -43,6 +43,39 @@ public class PatientDao {
         return true;
     }
 
+    public Patient queryByCaseCode(Integer caseCode){
+        Connection conn = null;
+        PreparedStatement ptmt = null;
+        ResultSet rs = null;
+
+        try {
+            //获取连接
+            conn = DbUtil.getConnection();
+            //sql, 每行加空格
+            String sql = "select * from patient where case_code = ?";
+            //预编译SQL，减少sql执行
+            ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1,caseCode);
+
+            //执行
+            rs = ptmt.executeQuery();
+            while (rs.next()) {
+                Patient patient = new Patient();
+                patient.setAge(rs.getInt("age"));
+                patient.setName(rs.getString("name"));
+                patient.setSex(rs.getString("sex"));
+                return patient;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }finally {
+            DbUtil.close(rs,ptmt,conn);
+        }
+
+        return null;
+    }
+
     public boolean existCaseCode(Integer caseCode){
 
         Connection conn = null;
@@ -53,7 +86,7 @@ public class PatientDao {
             //获取连接
             conn = DbUtil.getConnection();
             //sql, 每行加空格
-            String sql = "select * from patient where caseCode = ?";
+            String sql = "select * from patient where case_code = ?";
             //预编译SQL，减少sql执行
             ptmt = conn.prepareStatement(sql);
             ptmt.setInt(1,caseCode);

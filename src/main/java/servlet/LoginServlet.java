@@ -25,8 +25,7 @@ public class LoginServlet extends HttpServlet {
 
         if(doctor != null){
             req.getSession().setAttribute("doctor",doctor);
-            req.getRequestDispatcher("kanzhen.jsp").forward(req,resp);
-
+            req.getRequestDispatcher("doctor/kanzhen.jsp").forward(req,resp);
         } else {
             req.getRequestDispatcher("login.jsp").forward(req,resp);
         }

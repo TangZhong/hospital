@@ -40,7 +40,7 @@ public class KaiYaoServlet extends HttpServlet {
 
         req.setAttribute("list",kanZhenPatientVoList);
 
-        req.getRequestDispatcher("kaiyao.jsp").forward(req,resp);
+        req.getRequestDispatcher("doctor/kaiyao.jsp").forward(req,resp);
     }
 
     @Override

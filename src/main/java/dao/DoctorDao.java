@@ -30,6 +30,7 @@ public class DoctorDao {
             rs = ptmt.executeQuery();
 
             while (rs.next()) {
+                doctor = new Doctor();
                 doctor.setId(rs.getInt("id"));
                 doctor.setName(rs.getString("name"));
             }
