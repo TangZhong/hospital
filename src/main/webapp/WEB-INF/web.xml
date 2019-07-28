@@ -78,4 +78,14 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ShouFeiSevlet</servlet-name>
+        <servlet-class>servlet.ShouFeiSevlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ShouFeiSevlet</servlet-name>
+        <url-pattern>/shoufei</url-pattern>
+    </servlet-mapping>
+
 </web-app>

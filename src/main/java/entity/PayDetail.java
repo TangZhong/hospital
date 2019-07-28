@@ -6,11 +6,11 @@ public class PayDetail {
 
     private Integer case_code;
 
-    private String pro_name;
+    private String price1;
 
-    private Float pro_price;
+    private String price2;
 
-    private Integer pro_amount;
+    private String price3;
 
     public Integer getId() {
         return id;
@@ -28,27 +28,27 @@ public class PayDetail {
         this.case_code = case_code;
     }
 
-    public String getPro_name() {
-        return pro_name;
+    public String getPrice1() {
+        return price1;
     }
 
-    public void setPro_name(String pro_name) {
-        this.pro_name = pro_name;
+    public void setPrice1(String price1) {
+        this.price1 = price1;
     }
 
-    public Float getPro_price() {
-        return pro_price;
+    public String getPrice2() {
+        return price2;
     }
 
-    public void setPro_price(Float pro_price) {
-        this.pro_price = pro_price;
+    public void setPrice2(String price2) {
+        this.price2 = price2;
     }
 
-    public Integer getPro_amount() {
-        return pro_amount;
+    public String getPrice3() {
+        return price3;
     }
 
-    public void setPro_amount(Integer pro_amount) {
-        this.pro_amount = pro_amount;
+    public void setPrice3(String price3) {
+        this.price3 = price3;
     }
 }

@@ -1,19 +1,25 @@
 package service;
 
+import dao.PayDao;
+import dao.ShoufeiDao;
 import entity.PayDetail;
+import vo.ShouFeiVo;
 
 import java.util.List;
 
 public class ShouFeiService {
 
-    public List<PayDetail> listPayDetail(Integer caseCode){
+    public List<ShouFeiVo> listPayDetail(Integer caseCode){
 
+        ShoufeiDao shoufeiDao = new ShoufeiDao();
+        return shoufeiDao.listShoufei(caseCode);
 
-        return null;
     }
 
-    public boolean savePayDetail(List<PayDetail> payDetailList){
+    public boolean savePayDetail(PayDetail payDetail){
 
+        PayDao payDao = new PayDao();
+        payDao.save(payDetail);
 
         return false;
     }

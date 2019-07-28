@@ -14,11 +14,11 @@ public class Register {
 
     private String status;
 
-    private Integer clinicId;
+    private String clinicId;
 
-    private Integer doctorId;
+    private String doctorId;
 
-    private Integer registerCategoryId;
+    private String registerCategoryId;
 
     public Integer getId() {
         return id;
@@ -60,27 +60,27 @@ public class Register {
         this.status = status;
     }
 
-    public Integer getClinicId() {
+    public String getClinicId() {
         return clinicId;
     }
 
-    public void setClinicId(Integer clinicId) {
+    public void setClinicId(String clinicId) {
         this.clinicId = clinicId;
     }
 
-    public Integer getDoctorId() {
+    public String getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(Integer doctorId) {
+    public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
     }
 
-    public Integer getRegisterCategoryId() {
+    public String getRegisterCategoryId() {
         return registerCategoryId;
     }
 
-    public void setRegisterCategoryId(Integer registerCategoryId) {
+    public void setRegisterCategoryId(String registerCategoryId) {
         this.registerCategoryId = registerCategoryId;
     }
 }

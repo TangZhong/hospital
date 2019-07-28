@@ -178,24 +178,25 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 	function save() {
-		var d = {};
-		var t = $('form').serializeArray();
-		$.each(t, function() {
-			d[this.name] = this.value;
-		});
+		if(validate()){
+			var d = {};
+			var t = $('form').serializeArray();
+			$.each(t, function() {
+				d[this.name] = this.value;
+			});
 
-		console.log(d);
+			$.ajax({
+				url: "/guahao",
+				type: "POST",
+				dataType: "json",
+				data: JSON.stringify(d),
+				contentType: 'application/json',
+				success: function (data) {
+					layer.msg('挂号成功!');
+				}
+			});
+		}
 
-		$.ajax({
-			url: "/guahao",
-			type: "POST",
-			dataType: "json",
-			data: JSON.stringify(d),
-			contentType: 'application/json',
-			success: function (data) {
-				layer.msg('挂号成功!');
-			}
-		});
 	}
 
 	function loadDictionary(category){
@@ -224,6 +225,21 @@
     }
 
     var priceObj = {};
+
+	function validate(){
+
+		var diagnoseTime = $('#diagnoseTime').val();
+		var invoiceId = $('#invoiceId').val();
+		var caseCode = $('#caseCode').val();
+		var doctorId = $('#doctorId').val();
+
+		if(diagnoseTime && invoiceId && caseCode && doctorId){
+			return true;
+		}else {
+			layer.msg("请填入必填信息");
+			return false;
+		}
+	}
 
 $(function(){
 
@@ -294,32 +310,6 @@ $(function(){
 		queryPatientByCaseCode(caseCode);
     });
 
-	$("#form-member-add").validate({
-		rules:{
-			diagnoseTime:{
-				required:true
-			},
-			price:{
-				required:true
-			},
-			invoiceId:{
-				required:true
-			},
-			caseCode:{
-				required:true,
-				isNumber:true
-			}
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid"/*,
-		submitHandler:function(form){
-			$(form).ajaxSubmit();
-			// var index = parent.layer.getFrameIndex(window.name);
-			// //parent.$('.btn-refresh').click();
-			// parent.layer.close(index);
-		}*/
-	});
 });
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->

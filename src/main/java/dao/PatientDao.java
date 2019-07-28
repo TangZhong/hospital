@@ -64,6 +64,8 @@ public class PatientDao {
                 patient.setAge(rs.getInt("age"));
                 patient.setName(rs.getString("name"));
                 patient.setSex(rs.getString("sex"));
+                patient.setIdCard(rs.getString("id_card"));
+                patient.setCaseCode(rs.getInt("case_code"));
                 return patient;
             }
         }catch (Exception e){

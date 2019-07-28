@@ -3,9 +3,10 @@ package utils;
 import java.sql.*;
 
 public class DbUtil {
-    public static final String URL = "jdbc:mysql://10.199.245.40:3306/his";
+//    public static final String URL = "jdbc:mysql://10.199.245.40:3306/his";
+    public static final String URL = "jdbc:mysql://127.0.0.1:3306/his";
     public static final String USER = "root";
-    public static final String PASSWORD = "123456";
+    public static final String PASSWORD = "root";
 
     static{
         try {

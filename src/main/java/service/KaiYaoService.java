@@ -1,16 +1,17 @@
 package service;
 
-import entity.Prescription;
+import dao.RegisterDao;
 import entity.PrescriptionDetail;
+import vo.KaiYaoPatientVo;
 
 import java.util.List;
 
 public class KaiYaoService {
 
-    public Prescription getPrescription(){
+    public List<KaiYaoPatientVo> listKaiyaoPatients(Integer doctorId){
 
-
-        return null;
+        RegisterDao registerDao = new RegisterDao();
+        return registerDao.listKaiyao(doctorId);
     }
 
     public boolean savePrescriptionDetail(List<PrescriptionDetail> pdList){

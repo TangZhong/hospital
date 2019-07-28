@@ -18,6 +18,8 @@
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
 <link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap-theme.min.css"/>
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -30,74 +32,94 @@
 	<tr>
 		<%--<td width="200" class="va-t"><ul id="treeDemo" class="ztree"></ul></td>--%>
 		<td class="va-t" style="width: 20%;">
-			<table class="table table-bordered">
-				<thead>
-				<tr>
-					<th>病历号</th>
-					<th>姓名</th>
-					<th>年龄</th>
-				</tr>
-				</thead>
-				<tbody>
-				<c:forEach  items="${patientList}" var="item">
-					<tr>
-						<td>${item.caseCode}</td>
-						<td>${item.name}</td>
-						<td>${item.age}</td>
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
+
+						<div class="list-group">
+							<a href="#" class="list-group-item active">
+								<h4 class="list-group-item-heading">
+									未诊患者：
+								</h4>
+							</a>
+							<c:forEach items="${patientList}" var="item">
+								<c:if test="${item.status == '1'}">
+									<a href="#" class="list-group-item" onclick="showClick(this)">
+										<ul class="list-inline">
+											<li>${item.caseCode}</li>
+											<li>${item.name}</li>
+											<li>${item.age}</li>
+										</ul>
+									</a>
+								</c:if>
+							</c:forEach>
+						</div>
+
+						<div class="list-group">
+							<a href="#" class="list-group-item active">
+								<h4 class="list-group-item-heading">
+									已诊患者：
+								</h4>
+							</a>
+							<c:forEach items="${patientList}" var="item">
+								<c:if test="${item.status == '2'}">
+								<a href="#" class="list-group-item" onclick="showClick(this)">
+									<ul class="list-inline">
+										<li>${item.caseCode}</li>
+										<li>${item.name}</li>
+										<li>${item.age}</li>
+									</ul>
+								</a>
+								</c:if>
+							</c:forEach>
+						</div>
 		</td>
 		<td class="va-t">
 			<form class="form form-horizontal" id="form-article-add">
+				<div style="text-align: center;">
+					<h3>
+						患者姓名：<span id="nameLable">-</span>
+						病历号：<span id="caseCodeLable">-</span>
+						年龄：<span id="ageLable">-</span>
+					</h3>
+				</div>
 				<div id="tab-system" class="HuiTab">
 					<div class="tabBar cl">
 						<span>病历首页</span>
-						<%--<span>检查申请</span>
-						<span>检验申请</span>
-						<span>门诊确诊</span>
-						<span>处置申请</span>
-						<span>成药处方</span>
-						<span>草药处方</span>
-						<span>费用查询</span>--%>
 					</div>
 				</div>
 				<div class="row cl">
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">主述：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="zhushu" name="zhushu">
 						</div>
 					</div>
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">现病史：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="xianbingshi" name="xianbingshi">
 						</div>
 					</div>
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">现病治疗情况：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="xianbingzhiliao" name="xianbingzhiliao">
 						</div>
 					</div>
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">既往史：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="jiwangshi" name="jiwangshi">
 						</div>
 					</div>
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">过敏史：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="guominshi" name="guominshi">
 						</div>
 					</div>
 					<div class="row cl">
 						<label class="form-label col-xs-4 col-sm-2">体格检查：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="tigejiancha" name="tigejiancha">
 						</div>
 					</div>
 				</div>
@@ -108,16 +130,16 @@
 				</div>
 				<div class="row cl">
 					<div class="row cl">
-						<label class="form-label col-xs-4 col-sm-2">诊断结果：</label>
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>诊断结果：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<input type="text"  class="input-text" value="" id="" name="">
+							<input type="text"  class="input-text" value="" id="result" name="result">
 						</div>
 					</div>
 				</div>
 				<div class="row cl">
 					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-						<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
-						<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+						<input class="btn btn-primary radius" onclick="save()" value="&nbsp;&nbsp;诊断&nbsp;&nbsp;">
+						<input class="btn btn-primary radius" onclick="" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
 					</div>
 				</div>
 			</form>
@@ -133,6 +155,60 @@
 <!--使用ztree插件，也可以自行选择其他插件显示 -->
 <script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
 <script type="text/javascript">
+
+	function showClick(item){
+
+		var caseCode = $(item).find('li:eq(0)').text();
+		var name = $(item).find('li:eq(1)').text();
+		var age = $(item).find('li:eq(2)').text();
+
+		$('#caseCodeLable').text(caseCode);
+		$('#nameLable').text(name);
+		$('#ageLable').text(age);
+
+	}
+
+	function validate(){
+
+		var caseCode = $('#caseCodeLable').text();
+		var result = $('#result').val();
+
+		console.log(caseCode + ' - ' + result);
+
+		if(!caseCode || '-' == caseCode){
+			layer.msg("请选择一个未就诊病人！");
+			return false;
+		} else if(!result){
+			layer.msg("请填入诊断信息！");
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function save() {
+		if(validate()){
+			var d = {};
+			var t = $('form').serializeArray();
+			$.each(t, function() {
+				d[this.name] = this.value;
+			});
+
+			d.case_code = $('#caseCodeLable').text();
+
+			$.ajax({
+				url: "/kanzhen",
+				type: "POST",
+				dataType: "json",
+				data: JSON.stringify(d),
+				contentType: 'application/json',
+				success: function (data) {
+					layer.msg('看诊成功!');
+				}
+			});
+		}
+
+	}
 
 $(document).ready(function(){
 

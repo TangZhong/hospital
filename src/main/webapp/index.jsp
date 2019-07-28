@@ -17,6 +17,8 @@
 <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/bootstrap-theme.min.css"/>
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -68,13 +70,13 @@
 			<dd>
 				<ul>
 					<li><a data-href="kanzhen" data-title="门诊病历" >门诊病历</a></li>
-					<li><a data-href="kaiyao" data-title="医技模板管理">开药</a></li>
+					<li><a data-href="kaiyao" data-title="医生开药">开药</a></li>
 					<%--<li><a data-href="product-category.html" data-title="西药处方模板" href="javascript:void(0)">西药处方模板</a></li>
 					<li><a data-href="product-category.html" data-title=">中药处方模板" href="javascript:void(0)">中药处方模板</a></li>--%>
 				</ul>
 			</dd>
 		</dl>
-		<dl id="menu-product">
+		<%--<dl id="menu-product">
 			<dt><i class="Hui-iconfont">&#xe620;</i> 医技处置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -120,7 +122,7 @@
 					<li><a data-href="article-list.html" data-title="医生排班管理" href="javascript:void(0)">医生排班管理</a></li>
 				</ul>
 			</dd>
-		</dl>		
+		</dl>		--%>
 	</div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

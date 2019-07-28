@@ -1,6 +1,6 @@
 package vo;
 
-public class KanZhenPatientVo {
+public class KaiYaoPatientVo {
 
     private Integer caseCode;
 
@@ -9,6 +9,26 @@ public class KanZhenPatientVo {
     private Integer age;
 
     private String status;
+
+    private String pres;
+
+    private Integer presId;
+
+    public Integer getPresId() {
+        return presId;
+    }
+
+    public void setPresId(Integer presId) {
+        this.presId = presId;
+    }
+
+    public String getPres() {
+        return pres;
+    }
+
+    public void setPres(String pres) {
+        this.pres = pres;
+    }
 
     public String getStatus() {
         return status;

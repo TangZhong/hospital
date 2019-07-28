@@ -1,7 +1,11 @@
 package servlet;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import dao.RegisterDao;
 import entity.Case;
 import entity.Doctor;
+import entity.Register;
 import service.KanZhenService;
 import vo.KanZhenPatientVo;
 
@@ -9,7 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -37,17 +43,35 @@ public class KanZhenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        StringBuffer json = new StringBuffer();
+        String line = null;
+        BufferedReader reader = null;
+        try {
+            reader = req.getReader();
+            while((line = reader.readLine()) != null) {
+                json.append(line);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(reader != null)
+                reader.close();
+        }
+
+        JSONObject jsonObject = JSON.parseObject(json.toString());
+
         //获取页面提交数据
-        Integer case_code = Integer.parseInt(req.getParameter("case_code"));
-        String zhushu = req.getParameter("zhushu");
-        String xianbingshi = req.getParameter("xianbingshi");
-        String xianbingzhiliao = req.getParameter("xianbingzhiliao");
-        String jiwangshi = req.getParameter("jiwangshi");
-        String guominshi = req.getParameter("guominshi");
-        String tigejiancha = req.getParameter("tigejiancha");
-        String jianchajianyi = req.getParameter("jianchajianyi");
-        String warning = req.getParameter("warning");
-        String result = req.getParameter("result");
+        Integer case_code = jsonObject.getInteger("case_code");
+        String zhushu = jsonObject.getString("zhushu");
+        String xianbingshi = jsonObject.getString("xianbingshi");
+        String xianbingzhiliao = jsonObject.getString("xianbingzhiliao");
+        String jiwangshi = jsonObject.getString("jiwangshi");
+        String guominshi = jsonObject.getString("guominshi");
+        String tigejiancha = jsonObject.getString("tigejiancha");
+        String jianchajianyi = jsonObject.getString("jianchajianyi");
+        String warning = jsonObject.getString("warning");
+        String result = jsonObject.getString("result");
 //        Integer registerId = Integer.parseInt(req.getParameter("registerId"));
 
         Case caseEntity = new Case();
@@ -62,13 +86,21 @@ public class KanZhenServlet extends HttpServlet {
         caseEntity.setWarning(warning);
         caseEntity.setResult(result);
 
-        //调用服务
+        //调用服务 - 保存看诊信息
         KanZhenService kanZhenService = new KanZhenService();
         boolean success = kanZhenService.save(caseEntity);
 
+        //调用服务 - 更新看诊状态
+        Register register = new Register();
+        register.setCaseCode(case_code);
+        RegisterDao registerDao = new RegisterDao();
+        registerDao.update(register);
+
         //页面跳转 & 数据绑定
-        req.setAttribute("success",success);
-        req.getRequestDispatcher("kanzhen.jsp").forward(req,resp);
+        PrintWriter out = resp.getWriter();
+        out.print(success);
+        out.flush();
+        out.close();
 
     }
 }

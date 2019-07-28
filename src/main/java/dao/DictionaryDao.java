@@ -20,7 +20,7 @@ public class DictionaryDao {
         ResultSet rs = null;
 
 //        List<DictionaryEntity> result = new ArrayList<>();
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap();
         try {
             //获取连接
             conn = DbUtil.getConnection();

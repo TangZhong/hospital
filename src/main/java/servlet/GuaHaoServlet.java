@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import dao.PatientDao;
 import entity.Patient;
 import entity.Register;
+import org.apache.commons.lang3.StringUtils;
 import service.GuaHaoService;
 
 import javax.servlet.ServletException;
@@ -61,7 +62,7 @@ public class GuaHaoServlet extends HttpServlet {
                 reader.close();
         }
 
-        HashMap param = JSON.parseObject(json.toString(), HashMap.class);
+        HashMap<String,String> param = JSON.parseObject(json.toString(), HashMap.class);
 
         //获取提交参数
         //构造entity对象
@@ -76,17 +77,17 @@ public class GuaHaoServlet extends HttpServlet {
             }
         }
 
-        register.setCaseCode((Integer) param.get("caseCode"));
+        register.setCaseCode(Integer.valueOf(param.get("caseCode").toString()));
         register.setDiagnosePeriod(String.valueOf(param.get("diagnosePeriod")));
-        register.setStatus(String.valueOf(param.get("status")));
-        register.setClinicId((Integer) param.get("clinicId"));
-        register.setDoctorId((Integer) param.get("doctorId"));
-        register.setRegisterCategoryId((Integer) param.get("registerCategoryId"));
+        register.setStatus("1");//1-未诊断  2-诊断
+        register.setClinicId(String.valueOf(param.get("clinicId")));
+        register.setDoctorId(String.valueOf(param.get("doctorId")));
+        register.setRegisterCategoryId(String.valueOf(param.get("registerCategoryId")));
 
         //构造entity对象
         Patient patient = new Patient();
 
-        if(param.get("birthday") != null){
+        if(StringUtils.isNotEmpty(param.get("birthday"))){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 patient.setBirthday(sdf.parse(String.valueOf(param.get("birthday"))));
@@ -95,8 +96,8 @@ public class GuaHaoServlet extends HttpServlet {
             }
         }
 
-        if(param.get("age") != null){
-            Integer age = (Integer) param.get("age");
+        if(StringUtils.isNotEmpty(param.get("age"))){
+            Integer age = Integer.valueOf(param.get("age"));
             patient.setAge(age);
         }
 

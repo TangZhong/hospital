@@ -16,7 +16,7 @@ public class CaseDao {
             //获取连接
             conn = DbUtil.getConnection();
             //sql
-            String sql = "INSERT INTO patient(case_code,zhushu,xianbingshi,xianbingzhiliao,jiwangshi,guominshi,tigejiancha,jianchajianyi,warning) VALUES(?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO `case`(code,zhushu,xianbingshi,xianbingzhiliao,jiwangshi,guominshi,tigejiancha,jianchajianyi,warning) VALUES(?,?,?,?,?,?,?,?,?)";
             //预编译
             ptmt = conn.prepareStatement(sql); //预编译SQL，减少sql执行
 

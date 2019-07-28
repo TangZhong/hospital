@@ -5,6 +5,7 @@ import entity.Prescription;
 import entity.PrescriptionDetail;
 import service.KaiYaoService;
 import service.KanZhenService;
+import vo.KaiYaoPatientVo;
 import vo.KanZhenPatientVo;
 
 import javax.servlet.ServletException;
@@ -27,18 +28,10 @@ public class KaiYaoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer doctorId = ((Doctor) req.getSession().getAttribute("doctor")).getId();
 
-        KanZhenService kanZhenService = new KanZhenService();
-        List<KanZhenPatientVo> kanZhenPatientVoList = kanZhenService.listKanzhenPatients(doctorId);
+        KaiYaoService kaiYaoService = new KaiYaoService();
+        List<KaiYaoPatientVo> kaiYaoPatientVoList = kaiYaoService.listKaiyaoPatients(doctorId);
 
-        String patientIdParam = req.getParameter("patientId");
-
-        if(patientIdParam != null){//如果选中了病人就查出诊断的结果
-            KaiYaoService kaiYaoService = new KaiYaoService();
-            Prescription p = kaiYaoService.getPrescription();
-            req.setAttribute("p",p);
-        }
-
-        req.setAttribute("list",kanZhenPatientVoList);
+        req.setAttribute("list",kaiYaoPatientVoList);
 
         req.getRequestDispatcher("doctor/kaiyao.jsp").forward(req,resp);
     }
